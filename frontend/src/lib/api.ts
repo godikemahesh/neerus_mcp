@@ -49,6 +49,10 @@ export function getTree() {
   return request<{ directories: DirectoryTree }>('/api/tree')
 }
 
+export function getMcpUrl() {
+  return request<{ url: string }>('/api/mcp-url')
+}
+
 export function uploadFile(directory: string, file: File) {
   const form = new FormData()
   form.set('directory', directory)

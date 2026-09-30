@@ -34,6 +34,11 @@ def me(_: None = Depends(auth.require_admin)):
     return {"authenticated": True}
 
 
+@router.get("/mcp-url")
+def get_mcp_url(_: None = Depends(auth.require_admin)):
+    return {"url": f"{config.PUBLIC_BACKEND_URL}/mcp/{config.MCP_PATH_SECRET}"}
+
+
 @router.get("/tree")
 def get_tree(_: None = Depends(auth.require_admin)):
     entries = catalog.list_catalog()

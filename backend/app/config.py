@@ -35,6 +35,12 @@ SUPABASE_STORAGE_BUCKET = os.environ.get("SUPABASE_STORAGE_BUCKET", "raw-uploads
 #   python -c "import secrets; print(secrets.token_urlsafe(32))"
 MCP_PATH_SECRET = _require("MCP_PATH_SECRET")
 
+# This backend's own public URL, e.g. https://neerus-mcp.onrender.com
+# (no trailing slash). Used only to hand the full MCP connector URL back to
+# the admin UI -- not derived from the incoming request, since Render's
+# proxy headers aren't trustworthy without extra uvicorn configuration.
+PUBLIC_BACKEND_URL = _require("PUBLIC_BACKEND_URL").rstrip("/")
+
 # Shared login for the admin upload/delete UI.
 ADMIN_PASSWORD = _require("ADMIN_PASSWORD")
 SESSION_SECRET = _require("SESSION_SECRET")

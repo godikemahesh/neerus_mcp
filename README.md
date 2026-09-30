@@ -40,7 +40,8 @@ python -c "import secrets; print(secrets.token_urlsafe(32))"   # SESSION_SECRET
 
 Required environment variables (see `backend/.env.example` for the full list
 with comments): `DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`,
-`MCP_PATH_SECRET`, `ADMIN_PASSWORD`, `SESSION_SECRET`, `CORS_ORIGINS`.
+`MCP_PATH_SECRET`, `PUBLIC_BACKEND_URL`, `ADMIN_PASSWORD`, `SESSION_SECRET`,
+`CORS_ORIGINS`.
 
 **Deploy:** push this repo to GitHub, then in Render choose **New -> Blueprint**
 and point it at the repo — it will read [`render.yaml`](render.yaml) and create
@@ -80,12 +81,12 @@ and redeploy the backend.
 
 ## 4. Connect Claude Desktop
 
+Open the admin UI and click **Get MCP** (top right) to see and copy the
+connector URL — it's read from the backend's own env vars, so it's always
+correct. (Or build it by hand: `https://<your-render-backend>/mcp/<MCP_PATH_SECRET>`.)
+
 Claude Desktop -> Settings -> Connectors -> **Add custom connector**, and
-enter:
-```
-https://<your-render-backend>/mcp/<MCP_PATH_SECRET>
-```
-using the exact `MCP_PATH_SECRET` value you set on the backend. This URL has
+paste that URL in. This URL has
 no separate login step — the random secret in the path *is* the credential,
 so treat it like a password (Claude's simple "static header" auth option is
 currently in a limited beta most accounts can't use yet; see the note below).
