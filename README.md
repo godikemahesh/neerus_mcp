@@ -16,7 +16,9 @@ supabase/  SQL migration (catalog table)  -> run once in Supabase
    [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql), and run it.
    This creates the `dataset_catalog` table and a private `raw-uploads` storage bucket.
 3. Collect three values from **Project Settings**:
-   - **Database -> Connection string -> URI** -> `DATABASE_URL`
+   - **Database -> Connection string -> URI** -> `DATABASE_URL` (change the
+     `postgresql://` prefix to `postgresql+psycopg2://` -- see the comment in
+     `backend/.env.example` for why)
    - **API Keys -> Project URL** -> `SUPABASE_URL`
    - **API Keys -> Secret keys** (`sb_secret_...`) -> `SUPABASE_SECRET_KEY` (never expose this to the browser)
 
