@@ -1,0 +1,14 @@
+mcp[cli]>=1.9,<2
+fastapi>=0.115,<1
+uvicorn[standard]>=0.31,<1
+python-multipart>=0.0.9,<1
+pandas>=2.2,<3
+openpyxl>=3.1,<4
+duckdb>=1.2,<2
+sqlglot>=26,<30
+numpy>=1.26,<3
+SQLAlchemy>=2.0,<3
+psycopg2-binary>=2.9,<3
+supabase>=2.31,<3
+itsdangerous>=2.2,<3
+python-dotenv>=1.0,<2

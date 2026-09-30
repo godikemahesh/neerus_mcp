@@ -1,0 +1,7 @@
+
+mcp[cli]
+pandas
+openpyxl
+duckdb
+sqlglot
+numpy
