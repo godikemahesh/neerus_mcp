@@ -28,12 +28,18 @@ app.add_middleware(
 
 app.include_router(api_router)
 
-# The Claude connector URL is the full path below, including the secret
-# segment -- keep it out of source control (it comes from the
-# MCP_PATH_SECRET env var).
-app.mount(f"/mcp/{config.MCP_PATH_SECRET}", mcp.streamable_http_app())
-
 
 @app.get("/healthz")
 def healthz():
     return {"ok": True}
+
+
+# Mounted at the root, not at "/mcp/<secret>": the sub-app's own route path
+# (set in mcp_server.py) already *is* the full "/mcp/<secret>" path. Mounting
+# it under an extra prefix here would make the sub-app's route pattern be
+# "<prefix>/" internally, and a request to the connector URL *without* a
+# trailing slash would get a 307 redirect to add one -- which is exactly
+# what broke Claude Desktop's "Add custom connector" check (it doesn't
+# follow that redirect). Every route above this line is matched first, so
+# this catch-all can't shadow /api/* or /healthz.
+app.mount("/", mcp.streamable_http_app())

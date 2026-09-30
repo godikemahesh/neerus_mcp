@@ -1,12 +1,31 @@
+from urllib.parse import urlparse
+
 import pandas as pd
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 
-from . import cache
+from . import cache, config
 from .config import MAX_ROWS
 from .naming import json_safe
 from .sql_guard import validate_sql
 
-mcp = FastMCP("Neerus Excel Analytics", streamable_http_path="/")
+_public_host = urlparse(config.PUBLIC_BACKEND_URL).hostname
+
+# The route path is the *entire* connector URL path (not just a mount
+# prefix) so that hitting it without a trailing slash matches directly --
+# see main.py for why this is mounted at the app root.
+#
+# transport_security must list the real public hostname: FastMCP's DNS
+# rebinding protection otherwise only allows Host headers like localhost/
+# 127.0.0.1 by default, and rejects every real request with 421.
+mcp = FastMCP(
+    "Neerus Excel Analytics",
+    streamable_http_path=f"/mcp/{config.MCP_PATH_SECRET}",
+    transport_security=TransportSecuritySettings(
+        allowed_hosts=[_public_host, "127.0.0.1:*", "localhost:*", "[::1]:*"],
+        allowed_origins=[config.PUBLIC_BACKEND_URL, "http://127.0.0.1:*", "http://localhost:*"],
+    ),
+)
 
 
 @mcp.tool()
